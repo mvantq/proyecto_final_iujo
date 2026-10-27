@@ -1,0 +1,5 @@
+C:\Users\BOOM\Documents\SharpDevelop Projects\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.csprojResolveAssemblyReference.cache
+C:\Users\BOOM\Documents\SharpDevelop Projects\proyecto_final_iujo\proyecto_final_iujo\bin\Debug\proyecto_final_iujo.exe
+C:\Users\BOOM\Documents\SharpDevelop Projects\proyecto_final_iujo\proyecto_final_iujo\bin\Debug\proyecto_final_iujo.pdb
+C:\Users\BOOM\Documents\SharpDevelop Projects\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.exe
+C:\Users\BOOM\Documents\SharpDevelop Projects\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.pdb

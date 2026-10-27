@@ -47,12 +47,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CartaAguacs.cs" />
+    <Compile Include="CartaAire.cs" />
+    <Compile Include="CartaFuego.cs" />
+    <Compile Include="CartaTierra.cs" />
+    <Compile Include="Catalogo.cs" />
+    <Compile Include="Elemento.cs" />
+    <Compile Include="Escenario.cs" />
     <Compile Include="MainForm.cs" />
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Punto2D.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
