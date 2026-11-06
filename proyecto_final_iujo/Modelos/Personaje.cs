@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 
 namespace proyecto_final_iujo
 {
@@ -27,7 +26,6 @@ namespace proyecto_final_iujo
         public string IdPersonaje { get { return _idPersonaje; } set { _idPersonaje = value ?? ""; } }
         public string Nombre { get { return _nombre; } set { _nombre = string.IsNullOrWhiteSpace(value) ? "SinNombre" : value.Trim(); } }
         public Elemento Elemento { get { return _elemento; } protected set { _elemento = value; } }
-        public Punto2D Posicion { get; set; }
 
         public int VidaMaxima
         {
@@ -41,6 +39,13 @@ namespace proyecto_final_iujo
             set { _vidaActual = Math.Max(0, Math.Min(_vidaMaxima, value)); }
         }
 
+        // Propiedad alias para compatibilidad directa con las subclases
+        public int Vida
+        {
+            get { return _vidaActual; }
+            set { VidaActual = value; }
+        }
+
         public int EscudoBase { get { return _escudoBase; } protected set { _escudoBase = Math.Max(0, value); } }
 
         public int Escudo
@@ -49,7 +54,21 @@ namespace proyecto_final_iujo
             set { _escudo = Math.Max(0, Math.Min(_escudoMaximo, value)); }
         }
 
+        // Propiedad alias para compatibilidad con formulas que usan Defensa
+        public int Defensa
+        {
+            get { return _escudo; }
+            set { Escudo = value; }
+        }
+
         public int AtaqueBase { get { return _ataqueBase; } protected set { _ataqueBase = Math.Max(0, value); } }
+
+        // Propiedad alias para compatibilidad con formulas que usan Ataque
+        public int Ataque
+        {
+            get { return _ataqueBase; }
+            set { AtaqueBase = value; }
+        }
 
         public int Energia
         {
@@ -71,8 +90,8 @@ namespace proyecto_final_iujo
         public bool PuedeUsarEspecial { get { return _cargaEspecial >= 100 && _energia >= 2; } }
         #endregion
 
-        // Constructor que encaja exactamente con tus 4 cartas
-        protected Personaje(string id, string nom, Elemento elem, int vida, int escudo, int ataque, int empatia, string espNom, string espDesc, string arquetipo, Punto2D pos)
+        // Constructor base sin referencias a Punto2D ni posiciones
+        protected Personaje(string id, string nom, Elemento elem, int vida, int escudo, int ataque, int empatia, string espNom, string espDesc, string arquetipo)
         {
             int suma = vida + escudo + ataque;
             if (suma != 100)
@@ -95,12 +114,26 @@ namespace proyecto_final_iujo
             NombreEspecial = espNom;
             DescripcionEspecial = espDesc;
             ArquetipoFilosofico = arquetipo;
-            Posicion = pos;
         }
 
-        #region Metodos Polimorficos
+        #region Metodos de Soporte y Combate
+
+        // Metodo para restaurar puntos de vida respetando el tope de VidaMaxima
+        public virtual void RecuperarVida(int cantidad)
+        {
+            if (cantidad <= 0) return;
+            VidaActual += cantidad;
+        }
+
+        // Metodo para recibir danio directo (por ejemplo en sismos o habilidades penetrantes)
+        public virtual void RecibirDanoPuro(int cantidad)
+        {
+            if (cantidad <= 0) return;
+            VidaActual -= cantidad;
+        }
+
         public abstract int CalcularDanio(Personaje objetivo, Escenario escenario);
-        public abstract string UsarHabilidadEspecial(Personaje objetivo, Escenario escenario);
+        public abstract void HabilidadEspecial(Personaje objetivo);
 
         public virtual int RecibirDanio(int danioBruto)
         {
@@ -151,7 +184,10 @@ namespace proyecto_final_iujo
             }
         }
 
-        public abstract Personaje Clonar();
+        public virtual Personaje Clonar()
+        {
+            return (Personaje)this.MemberwiseClone();
+        }
 
         public override string ToString()
         {

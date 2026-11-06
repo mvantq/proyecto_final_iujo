@@ -54,35 +54,52 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CartaAguacs.cs" />
-    <Compile Include="CartaAire.cs" />
-    <Compile Include="CartaFuego.cs" />
-    <Compile Include="CartaTierra.cs" />
-    <Compile Include="Catalogo.cs" />
-    <Compile Include="Elemento.cs" />
-    <Compile Include="Escenario.cs" />
-    <Compile Include="FormSeleccionEscenario.cs" />
-    <Compile Include="FormSeleccionEscenario.Designer.cs">
-      <DependentUpon>FormSeleccionEscenario.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Idioma.cs" />
-    <Compile Include="MainForm.cs" />
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Personaje.cs" />
+    <Compile Include="Logica\Catalogo.cs" />
+    <Compile Include="Logica\Escenario.cs" />
+    <Compile Include="Logica\Vinculacion\Antopologia\Lore.cs" />
+    <Compile Include="Logica\Vinculacion\Calculo\AlgoritmoDano.cs" />
+    <Compile Include="Modelos\CartaAgua.cs" />
+    <Compile Include="Modelos\CartaAire.cs" />
+    <Compile Include="Modelos\CartaFuego.cs" />
+    <Compile Include="Modelos\CartasPoder.cs" />
+    <Compile Include="Modelos\CartaTierra.cs" />
+    <Compile Include="Modelos\Elemento.cs" />
+    <Compile Include="Modelos\Personaje.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Punto2D.cs" />
-    <Compile Include="Tema.cs" />
+    <Compile Include="Visuales\FormCargarEquipo.cs" />
+    <Compile Include="Visuales\FormCargarEquipo.Designer.cs">
+      <DependentUpon>FormCargarEquipo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Visuales\FormLoreDinamico.cs" />
+    <Compile Include="Visuales\FormLoreDinamico.Designer.cs">
+      <DependentUpon>FormLoreDinamico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Visuales\FormPartida.cs" />
+    <Compile Include="Visuales\FormPartida.Designer.cs">
+      <DependentUpon>FormPartida.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Visuales\MainForm.cs" />
+    <Compile Include="Visuales\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Visuales\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Logica\Vinculacion" />
+    <Folder Include="Logica\Vinculacion\Calculo" />
+    <Folder Include="Logica\Vinculacion\Antopologia" />
+    <Folder Include="Logica\Vinculacion\Ingles" />
+    <Folder Include="Modelos" />
+    <Folder Include="Logica" />
+    <Folder Include="Visuales" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

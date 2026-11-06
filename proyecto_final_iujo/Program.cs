@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Windows.Forms;
+using proyecto_final_iujo.Visuales;
 
 namespace proyecto_final_iujo
 {
