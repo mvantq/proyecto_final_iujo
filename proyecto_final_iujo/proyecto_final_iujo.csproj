@@ -56,6 +56,9 @@
   <ItemGroup>
     <Compile Include="Logica\Catalogo.cs" />
     <Compile Include="Logica\Escenario.cs" />
+    <Compile Include="Logica\GestorBaseDatos.cs" />
+    <Compile Include="Logica\GestorEstructurasYBitacora.cs" />
+    <Compile Include="Logica\MotorTurnos.cs" />
     <Compile Include="Logica\Vinculacion\Antopologia\Lore.cs" />
     <Compile Include="Logica\Vinculacion\Calculo\AlgoritmoDano.cs" />
     <Compile Include="Modelos\CartaAgua.cs" />
