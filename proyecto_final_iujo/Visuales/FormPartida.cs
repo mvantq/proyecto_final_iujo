@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using proyecto_final_iujo.Logica.Vinculacion.Calculo;
 
 namespace proyecto_final_iujo.Visuales
 {
@@ -41,77 +42,27 @@ namespace proyecto_final_iujo.Visuales
 			turno++;
 			lblTurno.Text = "Turno: " + turno;
 
-			// 1. Progresión progresiva y automática del escenario
-			string escenarioActual = "";
-			int fase = turno % 4;
-			int dano = 0;
+			string[] escenarios = { "Vórtice Huracanado", "Volcán Ardiente", "Ciénaga Helada", "Desfiladero Rocoso" };
+			string escenarioActual = escenarios[turno % 4];
+			lblEscenario.Text = "Escenario: " + escenarioActual;
 
-			switch (fase)
-			{
-				case 1:
-					escenarioActual = "Volcán Ardiente";
-					lblEscenario.Text = "Escenario: " + escenarioActual;
-					if (!poderAguaActivo) {
-						dano = 20;
-						lstHistorial.Items.Add("[Turno " + turno + "] Calor sofocante: recibes 20 de daño (Poder de Agua requerido).");
-					} else {
-						lstHistorial.Items.Add("[Turno " + turno + "] El Poder de Agua sofocó las llamas del volcán.");
-					}
-					break;
+			bool esTurnoTerremoto = (!terremotoOcurrido && turno >= turnoTerremoto);
 
-				case 2:
-					escenarioActual = "Ciénaga Helada";
-					lblEscenario.Text = "Escenario: " + escenarioActual;
-					if (!poderFuegoActivo) {
-						dano = 15;
-						lstHistorial.Items.Add("[Turno " + turno + "] Niebla y frío extremo: recibes 15 de daño (Poder de Fuego requerido).");
-					} else {
-						lstHistorial.Items.Add("[Turno " + turno + "] El Poder de Fuego calentó la ciénaga.");
-					}
-					break;
+			// LLAMADA AL MÓDULO 2 (CÁLCULO DE DAÑO Y EVENTOS)
+			ResultadoTurno res = AlgoritmoDano.ProcesarTurno(
+				vida, turno, escenarioActual,
+				poderFuegoActivo, poderAguaActivo, poderTierraActivo, poderAireActivo,
+				esTurnoTerremoto
+			);
 
-				case 3:
-					escenarioActual = "Desfiladero Rocoso";
-					lblEscenario.Text = "Escenario: " + escenarioActual;
-					if (!poderTierraActivo) {
-						dano = 15;
-						lstHistorial.Items.Add("[Turno " + turno + "] Derrumbe de piedras: recibes 15 de daño (Poder de Tierra requerido).");
-					} else {
-						lstHistorial.Items.Add("[Turno " + turno + "] El Poder de Tierra protegió del derrumbe.");
-					}
-					break;
+			if (res.TerremotoOcurrido) terremotoOcurrido = true;
 
-				case 0:
-					escenarioActual = "Vórtice Huracanado";
-					lblEscenario.Text = "Escenario: " + escenarioActual;
-					if (!poderAireActivo) {
-						dano = 15;
-						lstHistorial.Items.Add("[Turno " + turno + "] Vendavales cortantes: recibes 15 de daño (Poder de Aire requerido).");
-					} else {
-						lstHistorial.Items.Add("[Turno " + turno + "] El Poder de Aire canalizó la corriente.");
-					}
-					break;
-			}
+			vida = res.VidaRestante;
+			lblVida.Text = "Vida Equipo: " + vida;
+			lstHistorial.Items.Add("[Turno " + turno + "] " + res.MensajeDetalle + " (Daño sufrido: " + res.DanoRecibido + ")");
 
-			// 2. Evento aleatorio de Terremoto tras 3 o 4 turnos
-			if (!terremotoOcurrido && turno >= turnoTerremoto)
-			{
-				terremotoOcurrido = true;
-				lstHistorial.Items.Add("¡¡ALERTA!! ¡UN TERREMOTO SACUDE LA ALDEA!");
-				if (poderTierraActivo) {
-					lstHistorial.Items.Add("El Poder de Tierra estabilizó el suelo. Sin daño sísmico.");
-				} else {
-					dano += 25;
-					lstHistorial.Items.Add("Sin anclaje de tierra: sufres 25 de daño por el temblor.");
-				}
-			}
-
-			// Aplicar daño
-			vida -= dano;
 			if (vida <= 0)
 			{
-				vida = 0;
-				lblVida.Text = "Vida Equipo: 0";
 				lblVida.ForeColor = Color.Red;
 				MessageBox.Show("El equipo ha caído ante los elementos de la frontera.", "Fin de la Partida", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				MainForm inicio = new MainForm();
@@ -120,14 +71,8 @@ namespace proyecto_final_iujo.Visuales
 				return;
 			}
 
-			lblVida.Text = "Vida Equipo: " + vida;
-
-			// Reset de los poderes para el siguiente turno
-			poderFuegoActivo = false;
-			poderAguaActivo = false;
-			poderTierraActivo = false;
-			poderAireActivo = false;
-
+			// Reiniciar estados de cartas para el siguiente turno
+			poderFuegoActivo = poderAguaActivo = poderTierraActivo = poderAireActivo = false;
 			lstHistorial.TopIndex = lstHistorial.Items.Count - 1;
 		}
 

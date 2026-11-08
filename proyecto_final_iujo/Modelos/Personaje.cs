@@ -109,14 +109,20 @@ namespace proyecto_final_iujo
             Escudo = escudo;
             AtaqueBase = ataque;
             Empatia = empatia;
-            Energia = 2;
+            Energia = 5;
             CargaEspecial = 0;
             NombreEspecial = espNom;
             DescripcionEspecial = espDesc;
             ArquetipoFilosofico = arquetipo;
         }
 
-        #region Metodos de Soporte y Combate
+         #region Metodos de Soporte y Combate
+         
+          // regenera energia en cada turno
+         public virtual void RegenerarEnergiaTurno(int cantidad = 2)
+         {
+         Energia += cantidad; 
+         }
 
         // Metodo para restaurar puntos de vida respetando el tope de VidaMaxima
         public virtual void RecuperarVida(int cantidad)

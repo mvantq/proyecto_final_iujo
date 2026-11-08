@@ -6,3 +6,11 @@ C:\Users\BOOM\Documents\SharpDevelop Projects\proyecto_final_iujo\proyecto_final
 C:\Users\BOOM\Documents\SharpDevelop Projects\proyecto_final_iujo\proyecto_final_iujo\bin\Debug\proyecto_final_iujo.exe.config
 C:\Users\BOOM\Documents\SharpDevelop Projects\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.csproj.GenerateResource.Cache
 C:\Users\BOOM\Documents\SharpDevelop Projects\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.Visuales.MainForm.resources
+C:\Users\DELL 3050\Documents\PROYECTO\proyecto_final_iujo\proyecto_final_iujo\bin\Debug\proyecto_final_iujo.exe.config
+C:\Users\DELL 3050\Documents\PROYECTO\proyecto_final_iujo\proyecto_final_iujo\bin\Debug\proyecto_final_iujo.exe
+C:\Users\DELL 3050\Documents\PROYECTO\proyecto_final_iujo\proyecto_final_iujo\bin\Debug\proyecto_final_iujo.pdb
+C:\Users\DELL 3050\Documents\PROYECTO\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.csprojResolveAssemblyReference.cache
+C:\Users\DELL 3050\Documents\PROYECTO\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.Visuales.MainForm.resources
+C:\Users\DELL 3050\Documents\PROYECTO\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.csproj.GenerateResource.Cache
+C:\Users\DELL 3050\Documents\PROYECTO\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.exe
+C:\Users\DELL 3050\Documents\PROYECTO\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.pdb
