@@ -117,6 +117,14 @@ namespace proyecto_final_iujo
         }
 
         #region Metodos de Soporte y Combate
+        
+        
+          // Metodo para  regenerar energia
+        public virtual void RegenerarEnergiaTurno(int cantidad = 2)
+      {
+        Energia += cantidad;
+      }
+        
 
         // Metodo para restaurar puntos de vida respetando el tope de VidaMaxima
         public virtual void RecuperarVida(int cantidad)
