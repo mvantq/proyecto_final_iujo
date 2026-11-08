@@ -30,8 +30,8 @@
 			this.picFondo = new System.Windows.Forms.PictureBox();
 			this.lblTitulo = new System.Windows.Forms.Label();
 			this.pnlLista = new System.Windows.Forms.Panel();
-			this.lblSubLista = new System.Windows.Forms.Label();
 			this.clbPersonajes = new System.Windows.Forms.CheckedListBox();
+			this.lblSubLista = new System.Windows.Forms.Label();
 			this.pnlPreview = new System.Windows.Forms.Panel();
 			this.lblDetallesHeroe = new System.Windows.Forms.Label();
 			this.lblNombreHeroe = new System.Windows.Forms.Label();
@@ -57,7 +57,7 @@
 			// lblTitulo
 			// 
 			this.lblTitulo.BackColor = System.Drawing.Color.Transparent;
-			this.lblTitulo.Font = new System.Drawing.Font("Impact", 24F, System.Drawing.FontStyle.Regular);
+			this.lblTitulo.Font = new System.Drawing.Font("Impact", 24F);
 			this.lblTitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(215)))), ((int)(((byte)(0)))));
 			this.lblTitulo.Location = new System.Drawing.Point(50, 18);
 			this.lblTitulo.Name = "lblTitulo";
@@ -77,16 +77,6 @@
 			this.pnlLista.Size = new System.Drawing.Size(420, 320);
 			this.pnlLista.TabIndex = 2;
 			// 
-			// lblSubLista
-			// 
-			this.lblSubLista.Font = new System.Drawing.Font("Impact", 13F);
-			this.lblSubLista.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(220)))), ((int)(((byte)(90)))));
-			this.lblSubLista.Location = new System.Drawing.Point(15, 12);
-			this.lblSubLista.Name = "lblSubLista";
-			this.lblSubLista.Size = new System.Drawing.Size(390, 25);
-			this.lblSubLista.TabIndex = 0;
-			this.lblSubLista.Text = "HÉROES DISPONIBLES (MARCA PARA SELECCIONAR)";
-			// 
 			// clbPersonajes
 			// 
 			this.clbPersonajes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(20)))), ((int)(((byte)(16)))));
@@ -96,11 +86,20 @@
 			this.clbPersonajes.Font = new System.Drawing.Font("Arial", 10.5F, System.Drawing.FontStyle.Bold);
 			this.clbPersonajes.ForeColor = System.Drawing.Color.White;
 			this.clbPersonajes.FormattingEnabled = true;
-			this.clbPersonajes.ItemHeight = 22;
 			this.clbPersonajes.Location = new System.Drawing.Point(15, 45);
 			this.clbPersonajes.Name = "clbPersonajes";
-			this.clbPersonajes.Size = new System.Drawing.Size(388, 256);
+			this.clbPersonajes.Size = new System.Drawing.Size(388, 249);
 			this.clbPersonajes.TabIndex = 1;
+			// 
+			// lblSubLista
+			// 
+			this.lblSubLista.Font = new System.Drawing.Font("Impact", 13F);
+			this.lblSubLista.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(220)))), ((int)(((byte)(90)))));
+			this.lblSubLista.Location = new System.Drawing.Point(15, 12);
+			this.lblSubLista.Name = "lblSubLista";
+			this.lblSubLista.Size = new System.Drawing.Size(390, 25);
+			this.lblSubLista.TabIndex = 0;
+			this.lblSubLista.Text = "HÉROES DISPONIBLES (MARCA PARA SELECCIONAR)";
 			// 
 			// pnlPreview
 			// 
@@ -114,16 +113,17 @@
 			this.pnlPreview.Size = new System.Drawing.Size(310, 320);
 			this.pnlPreview.TabIndex = 3;
 			// 
-			// picHeroe
+			// lblDetallesHeroe
 			// 
-			this.picHeroe.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(16)))), ((int)(((byte)(12)))));
-			this.picHeroe.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.picHeroe.Location = new System.Drawing.Point(55, 15);
-			this.picHeroe.Name = "picHeroe";
-			this.picHeroe.Size = new System.Drawing.Size(200, 180);
-			this.picHeroe.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this.picHeroe.TabIndex = 0;
-			this.picHeroe.TabStop = false;
+			this.lblDetallesHeroe.Font = new System.Drawing.Font("Arial", 9.5F);
+			this.lblDetallesHeroe.ForeColor = System.Drawing.Color.Gainsboro;
+			this.lblDetallesHeroe.Location = new System.Drawing.Point(15, 228);
+			this.lblDetallesHeroe.Name = "lblDetallesHeroe";
+			this.lblDetallesHeroe.Size = new System.Drawing.Size(280, 80);
+			this.lblDetallesHeroe.TabIndex = 2;
+			this.lblDetallesHeroe.Text = "Pasa el mouse sobre la lista para ver su arquetipo mitológico y afinidad elementa" +
+			"l.";
+			this.lblDetallesHeroe.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// lblNombreHeroe
 			// 
@@ -136,16 +136,16 @@
 			this.lblNombreHeroe.Text = "SELECCIONA UN HÉROE";
 			this.lblNombreHeroe.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// lblDetallesHeroe
+			// picHeroe
 			// 
-			this.lblDetallesHeroe.Font = new System.Drawing.Font("Arial", 9.5F);
-			this.lblDetallesHeroe.ForeColor = System.Drawing.Color.Gainsboro;
-			this.lblDetallesHeroe.Location = new System.Drawing.Point(15, 228);
-			this.lblDetallesHeroe.Name = "lblDetallesHeroe";
-			this.lblDetallesHeroe.Size = new System.Drawing.Size(280, 80);
-			this.lblDetallesHeroe.TabIndex = 2;
-			this.lblDetallesHeroe.Text = "Pasa el mouse sobre la lista para ver su arquetipo mitológico y afinidad elemental.";
-			this.lblDetallesHeroe.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.picHeroe.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(16)))), ((int)(((byte)(12)))));
+			this.picHeroe.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.picHeroe.Location = new System.Drawing.Point(55, 15);
+			this.picHeroe.Name = "picHeroe";
+			this.picHeroe.Size = new System.Drawing.Size(200, 180);
+			this.picHeroe.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.picHeroe.TabIndex = 0;
+			this.picHeroe.TabStop = false;
 			// 
 			// btnVolver
 			// 

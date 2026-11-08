@@ -88,6 +88,9 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Visuales\FormCargarEquipo.resx">
+      <DependentUpon>FormCargarEquipo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Visuales\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

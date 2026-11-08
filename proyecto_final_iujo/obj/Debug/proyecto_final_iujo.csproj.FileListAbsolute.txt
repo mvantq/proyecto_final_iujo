@@ -6,6 +6,7 @@ C:\Users\BOOM\Documents\SharpDevelop Projects\proyecto_final_iujo\proyecto_final
 C:\Users\BOOM\Documents\SharpDevelop Projects\proyecto_final_iujo\proyecto_final_iujo\bin\Debug\proyecto_final_iujo.exe.config
 C:\Users\BOOM\Documents\SharpDevelop Projects\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.csproj.GenerateResource.Cache
 C:\Users\BOOM\Documents\SharpDevelop Projects\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.Visuales.MainForm.resources
+<<<<<<< HEAD
 C:\Users\DELL 3050\Documents\PROYECTO\proyecto_final_iujo\proyecto_final_iujo\bin\Debug\proyecto_final_iujo.exe.config
 C:\Users\DELL 3050\Documents\PROYECTO\proyecto_final_iujo\proyecto_final_iujo\bin\Debug\proyecto_final_iujo.exe
 C:\Users\DELL 3050\Documents\PROYECTO\proyecto_final_iujo\proyecto_final_iujo\bin\Debug\proyecto_final_iujo.pdb
@@ -14,3 +15,6 @@ C:\Users\DELL 3050\Documents\PROYECTO\proyecto_final_iujo\proyecto_final_iujo\ob
 C:\Users\DELL 3050\Documents\PROYECTO\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.csproj.GenerateResource.Cache
 C:\Users\DELL 3050\Documents\PROYECTO\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.exe
 C:\Users\DELL 3050\Documents\PROYECTO\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.pdb
+=======
+C:\Users\BOOM\Documents\SharpDevelop Projects\proyecto_final_iujo\proyecto_final_iujo\obj\Debug\proyecto_final_iujo.Visuales.FormCargarEquipo.resources
+>>>>>>> 253a0923852565a7cbb4f8ef6f85a1a88557d445
