@@ -119,6 +119,7 @@ namespace proyecto_final_iujo
          #region Metodos de Soporte y Combate
          
           // regenera energia en cada turno
+          
          public virtual void RegenerarEnergiaTurno(int cantidad = 2)
          {
          Energia += cantidad; 
