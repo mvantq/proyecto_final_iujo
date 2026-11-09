@@ -13,8 +13,27 @@ namespace proyecto_final_iujo.Visuales
 			InitializeComponent();
 			ConfigurarFondo();
 			AplicarSombraATitulo();
+			
+			// 1. Nos suscribimos al evento de cambio de idioma (¡Tema de 2do Semestre!)
+			Idioma.Cambiado += (s, e) => ActualizarTextosInterfaz();
+			
 			AsignarOpcionesConSombraYMovimiento();
 			ConfigurarAccesoLore();
+			ActualizarTextosInterfaz(); // Cargar idioma inicial
+		}
+
+		private void ActualizarTextosInterfaz()
+		{
+			// Actualizamos los textos usando el diccionario centralizado
+			lblTitulo.Text = Idioma.T("inicio.titulo");
+			this.Text = Idioma.T("app.titulo") + " - Menu Principal";
+			
+			// Forzamos redibujado de las opciones interactivas
+			lblJugar.Invalidate();
+			lblIdioma.Text = Idioma.T("inicio.idioma");
+			lblIdioma.Invalidate();
+			lblSalir.Text = Idioma.T("inicio.salir");
+			lblSalir.Invalidate();
 		}
 
 		private void ConfigurarFondo()
@@ -78,43 +97,48 @@ namespace proyecto_final_iujo.Visuales
 
 		private void AsignarOpcionesConSombraYMovimiento()
 		{
-			// Opción JUGAR -> Abre primero el Lore del Mundo
-			ConfigurarOpcionInteractiva(lblJugar, "JUGAR", () => {
+			// Opción JUGAR -> Abre el Lore del Mundo
+			ConfigurarOpcionInteractiva(lblJugar, () => Idioma.T("inicio.jugar").Replace("▶  ", "").Replace("▶  ", ""), () => {
 				FormLoreDinamico lore = new FormLoreDinamico();
 				lore.Show();
 				this.Hide();
 			});
 
-			// Opción CAMBIAR IDIOMA
-			ConfigurarOpcionInteractiva(lblIdioma, "CAMBIAR IDIOMA [ES]", () => {
-				// Reservado para la lógica de traducción a inglés
+			// Opción CAMBIAR IDIOMA -> Alterna el idioma globalmente con un clic
+			ConfigurarOpcionInteractiva(lblIdioma, () => Idioma.T("inicio.idioma"), () => {
+				Idioma.Alternar(); // Esto cambia entre ES y EN y dispara el evento Cambiado
 			});
 
 			// Opción SALIR
-			ConfigurarOpcionInteractiva(lblSalir, "SALIR", () => {
+			ConfigurarOpcionInteractiva(lblSalir, () => Idioma.T("inicio.salir"), () => {
 				Application.Exit();
 			});
 		}
 
-		private void ConfigurarOpcionInteractiva(Label opcion, string textoBase, Action accionClick)
+		// Modificamos ligeramente para aceptar funciones de texto dinámico
+		private void ConfigurarOpcionInteractiva(Label opcion, Func<string> obtenerTexto, Action accionClick)
 		{
 			int yOriginal = opcion.Location.Y;
+			opcion.Text = obtenerTexto();
 
-			// Sombra personalizada en cada frame de dibujado
+			// Actualizar texto cada vez que cambie el idioma
+			Idioma.Cambiado += (s, e) => {
+				opcion.Text = obtenerTexto();
+				opcion.Invalidate();
+			};
+
 			opcion.Paint += (s, e) => {
 				e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 				StringFormat sf = new StringFormat();
 				sf.Alignment = StringAlignment.Center;
 				sf.LineAlignment = StringAlignment.Center;
 
-				// Sombra negra de fondo
 				using (SolidBrush sombra = new SolidBrush(Color.FromArgb(245, 10, 10, 10)))
 				{
 					Rectangle rSombra = new Rectangle(2, 2, opcion.Width, opcion.Height);
 					e.Graphics.DrawString(opcion.Text, opcion.Font, sombra, rSombra, sf);
 				}
 
-				// Texto principal (blanco o dorado en hover)
 				using (SolidBrush frente = new SolidBrush(opcion.ForeColor))
 				{
 					Rectangle rFrente = new Rectangle(0, 0, opcion.Width, opcion.Height);
@@ -122,39 +146,24 @@ namespace proyecto_final_iujo.Visuales
 				}
 			};
 
-			// Al pasar el cursor: color dorado y punteros retro
 			opcion.MouseEnter += (s, e) => {
 				opcion.ForeColor = Color.FromArgb(255, 230, 90);
-				opcion.Text = "▶ " + textoBase + " ◀";
 				opcion.Invalidate();
 			};
 
-			// Al retirar el cursor: vuelve al estado original
 			opcion.MouseLeave += (s, e) => {
 				opcion.ForeColor = Color.White;
-				opcion.Text = textoBase;
 				opcion.Top = yOriginal;
 				opcion.Invalidate();
 			};
 
-			// Presionar: desplazamiento táctil hacia abajo
-			opcion.MouseDown += (s, e) => {
-				opcion.Top = yOriginal + 3;
-			};
-
-			// Soltar clic: vuelve a su altura
-			opcion.MouseUp += (s, e) => {
-				opcion.Top = yOriginal;
-			};
-
-			opcion.Click += (s, e) => {
-				accionClick();
-			};
+			opcion.MouseDown += (s, e) => { opcion.Top = yOriginal + 3; };
+			opcion.MouseUp += (s, e) => { opcion.Top = yOriginal; };
+			opcion.Click += (s, e) => { accionClick(); };
 		}
 
 		private void ConfigurarAccesoLore()
 		{
-			// Atajo de teclado: pulsa la tecla 'L' para abrir el Lore Dinámico
 			this.KeyPreview = true;
 			this.KeyDown += (s, e) => {
 				if (e.KeyCode == Keys.L)
@@ -165,9 +174,5 @@ namespace proyecto_final_iujo.Visuales
 				}
 			};
 		}
-	
-	
 	}
-	
-	
 }
