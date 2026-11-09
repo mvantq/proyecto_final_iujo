@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Windows.Forms;
 
+
 namespace proyecto_final_iujo.Visuales
 {
 	public partial class FormLoreDinamico : Form

@@ -3,8 +3,9 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Windows.Forms;
-
+using proyecto_final_iujo.Logica;
 namespace proyecto_final_iujo.Visuales
+	
 {
 	public partial class MainForm : Form
 	{

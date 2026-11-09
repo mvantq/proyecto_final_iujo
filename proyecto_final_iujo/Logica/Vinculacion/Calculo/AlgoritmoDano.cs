@@ -1,268 +1,83 @@
 ﻿using System;
-using System.Collections.Generic;
-using proyecto_final_iujo; // Necesario para acceder a Personaje y Elemento
 
 namespace proyecto_final_iujo.Logica.Vinculacion.Calculo
-
 {
-
-    public class ResultadoTurno
-
-    {
-
-        public int DanoRecibido { get; set; }
-
-        public int VidaRestante { get; set; }
-
-        public bool TerremotoOcurrido { get; set; }
-
-        public string MensajeDetalle { get; set; }
-
-    }
-
-
-    public static class AlgoritmoDano
-
-    {
-
-        // 1. Suma la salud inicial real de los 5 personajes (usando VidaMaxima)
-
-        public static int CalcularVidaInicialEquipo(List<Personaje> equipo)
-
-        {
-
-            if (equipo == null || equipo.Count == 0) return 100;
-
-            
-
-            int sumaHP = 0;
-
-            foreach (var p in equipo)
-
-            {
-
-                sumaHP += p.VidaMaxima;
-
-            }
-
-            return sumaHP;
-
-        }
-
-
-        // 2. Calcula la mitigación pasiva del equipo basándose en Defensa (Escudo) y Empatía
-
-        public static float CalcularFactorMitigacionPasiva(List<Personaje> equipo)
-
-        {
-
-            if (equipo == null || equipo.Count == 0) return 0f;
-
-
-            int defTotal = 0;
-
-            int empatiaTotal = 0;
-
-
-            foreach (var p in equipo)
-
-            {
-
-                defTotal += p.Defensa;
-
-                empatiaTotal += p.Empatia;
-
-            }
-
-
-            float defPromedio = defTotal / (float)equipo.Count;
-
-            float bonoEmpatia = (empatiaTotal / (float)equipo.Count) * 0.05f;
-
-
-            // Tope de reducción pasiva del 40%
-
-            return Math.Min(0.40f, (defPromedio / 100f) + bonoEmpatia);
-
-        }
-
-
-        // 3. Procesa el daño ambiental del turno y los eventos de terremoto
-
-        public static ResultadoTurno ProcesarTurno(
-
-            int vidaActual,
-
-            int numeroTurno,
-
-            string tipoEscenario,
-
-            bool poderFuego,
-
-            bool poderAgua,
-
-            bool poderTierra,
-
-            bool poderAire,
-
-            bool terremotoActivado,
-
-            List<Personaje> equipo = null)
-
-        {
-
-            ResultadoTurno resultado = new ResultadoTurno();
-
-            int danoBaseEscenario = 0;
-
-            int danoSismico = 0;
-
-            string explicacion = "";
-
-            
-
-            // Recargar +2 de energía a cada personaje en cada turno
-if (equipo != null)
-
-{
-
-    foreach (var p in equipo)
-
-    {
-
-        p.RegenerarEnergiaTurno(2);
-
-    }
-
+	public class ResultadoTurno
+	{
+		public int VidaRestante { get; set; }
+		public int DanoRecibido { get; set; }
+		public bool TerremotoOcurrido { get; set; }
+		public string MensajeDetalle { get; set; }
+	}
+
+	public static class AlgoritmoDano
+	{
+		private static Random random = new Random();
+
+		/// <summary>
+		/// MÓDULO DE CÁLCULO I: Procesa el daño ambiental y eventos sísmicos.
+		/// </summary>
+		public static ResultadoTurno ProcesarTurno(
+			int vidaActual, 
+			int turno, 
+			string escenario,
+			bool escudoFuego, 
+			bool escudoAgua, 
+			bool escudoTierra, 
+			bool escudoAire,
+			bool esTurnoTerremoto)
+		{
+			ResultadoTurno resultado = new ResultadoTurno();
+			resultado.TerremotoOcurrido = esTurnoTerremoto;
+
+			// =========================================================================
+			// UNIDAD 1: SISTEMA DE COORDENADAS Y DISTANCIA ENTRE DOS PUNTOS
+			// d = √[(x₂ - x₁)² + (y₂ - y₁)²]
+			// =========================================================================
+			double epicentroX = 0.0;
+			double epicentroY = 0.0;
+			
+			// Posición del personaje según el escenario en el plano cartesiano
+			double jugadorX = random.NextDouble() * 4.0 + 1.0; // Distancia entre 1.0 y 5.0 km
+			double jugadorY = random.NextDouble() * 3.0 + 1.0;
+
+			double distancia = Math.Sqrt(Math.Pow(jugadorX - epicentroX, 2) + Math.Pow(jugadorY - epicentroY, 2));
+
+			// =========================================================================
+			// UNIDAD 2: FUNCIONES EXPONENCIALES, TRIGONOMÉTRICAS Y LÍMITES AL INFINITO
+			// f(d) = A · e^(-k·d) · sin(ω·d)  |  lim (d->∞) f(d) = 0 (Asíntota Horizontal y=0)
+			// =========================================================================
+			int danoBase = 0;
+
+			if (esTurnoTerremoto)
+			{
+				double amplitud = 45.0;  // Magnitud inicial A
+				double k = 0.35;          // Coeficiente de atenuación
+				double omega = 2.5;       // Frecuencia angular de la onda
+
+				// Cálculo amortiguado exponencial/trigonométrico
+				double intensidad = Math.Abs(amplitud * Math.Exp(-k * distancia) * Math.Sin(omega * distancia));
+				danoBase = (int)Math.Round(intensidad);
+
+				resultado.MensajeDetalle = string.Format(
+					"Sismo a {0:F2}km de distancia (Epicentro [0,0]). Intensidad f(d)={1} HP", 
+					distancia, danoBase);
+			}
+			else
+			{
+				// Daño ambiental moderado por desgaste de escenario
+				danoBase = random.Next(5, 12);
+				resultado.MensajeDetalle = string.Format("Efecto de zona: {0}", escenario);
+			}
+
+			// Aplicar mitigación elemental de escudos
+			if (escudoTierra) danoBase = 0; // Cancelación total por protección
+			else if (escudoAire) danoBase = (int)(danoBase * 0.5);
+
+			resultado.DanoRecibido = danoBase;
+			resultado.VidaRestante = Math.Max(0, vidaActual - danoBase);
+
+			return resultado;
+		}
+	}
 }
-
-
-            float factorMitigacion = (equipo != null) ? CalcularFactorMitigacionPasiva(equipo) : 0f;
-
-
-            // Evaluación del escenario ambiental
-
-            switch (tipoEscenario.ToLower())
-
-            {
-
-                case "volcán ardiente":
-
-                case "volcan":
-
-                    if (!poderAgua) {
-
-                        danoBaseEscenario = 20;
-
-                        explicacion += "Calor sofocante (Falta Poder de Agua). ";
-
-                    } else {
-
-                        explicacion += "El Poder de Agua neutralizó el calor volcánico. ";
-
-                    }
-
-                    break;
-
-
-                case "ciénaga helada":
-
-                case "cienaga":
-
-                    if (!poderFuego) {
-
-                        danoBaseEscenario = 15;
-
-                        explicacion += "Frío y niebla extrema (Falta Poder de Fuego). ";
-
-                    } else {
-
-                        explicacion += "El Poder de Fuego disipó la ciénaga. ";
-
-                    }
-
-                    break;
-
-
-                case "desfiladero rocoso":
-
-                case "desfiladero":
-
-                    if (!poderTierra) {
-
-                        danoBaseEscenario = 15;
-
-                        explicacion += "Derrumbe de piedras (Falta Poder de Tierra). ";
-
-                    } else {
-
-                        explicacion += "El Poder de Tierra absorbió el derrumbe. ";
-
-                    }
-
-                    break;
-
-
-                case "vórtice huracanado":
-
-                case "vortice":
-
-                    if (!poderAire) {
-
-                        danoBaseEscenario = 15;
-
-                        explicacion += "Vendavales cortantes (Falta Poder de Aire). ";
-
-                    } else {
-
-                        explicacion += "El Poder de Aire amortiguó el vórtice. ";
-
-                    }
-
-                    break;
-
-            }
-
-
-            // Evaluación de amenaza sísmica
-
-            if (terremotoActivado)
-
-            {
-
-                resultado.TerremotoOcurrido = true;
-
-                if (!poderTierra) {
-
-                    danoSismico = 25;
-
-                    explicacion += "¡Terremoto sin anclaje de Tierra! (+25 daño). ";
-
-                } else {
-
-                    explicacion += "¡Terremoto esquivado gracias al Poder de Tierra! ";
-
-                }
-
-            }
-
-
-            int danoAmbientalFinal = (int)(danoBaseEscenario * (1f - factorMitigacion));
-
-            int danoTotal = danoAmbientalFinal + danoSismico;
-
-
-            resultado.DanoRecibido = danoTotal;
-
-            resultado.VidaRestante = Math.Max(0, vidaActual - danoTotal);
-
-            resultado.MensajeDetalle = explicacion.Trim();
-
-
-            return resultado;
-
-        }
-
-    }
-
-} 
