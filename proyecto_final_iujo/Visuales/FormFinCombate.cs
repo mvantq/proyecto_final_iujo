@@ -156,7 +156,7 @@ namespace proyecto_final_iujo.Visuales
 				}
 			}
 
-			string textoBanner = esVictoria ? "VICTORIA" : "DERROTA";
+			string textoBanner = esVictoria ? Idioma.T("vic.titulo") : Idioma.T("fin.derrota");
 			using (Font fuenteBanner = new Font("Impact", 68f * factor, FontStyle.Italic, GraphicsUnit.Pixel))
 			{
 				SizeF tam = g.MeasureString(textoBanner, fuenteBanner);
@@ -204,8 +204,8 @@ namespace proyecto_final_iujo.Visuales
 			if (escalaAparicion >= 1.0f)
 			{
 				string subtexto = esVictoria
-					? string.Format("EL PACTO DE LA ALDEA HA SIDO PRESERVADO POR {0} (TURNO {1})", heroePrincipal.ToUpper(), turnosTotales)
-					: string.Format("TU ESCUADRÓN HA CAÍDO ANTE LA ESPESURA DEL BOSQUE (TURNO {0})", turnosTotales);
+					? Idioma.T("fin.sub.victoria", heroePrincipal.ToUpper(), turnosTotales)
+					: Idioma.T("fin.sub.derrota", turnosTotales);
 
 				using (Font fSub = new Font("Arial", 11f, FontStyle.Bold))
 				using (SolidBrush bSubSombra = new SolidBrush(Color.Black))

@@ -9,16 +9,10 @@ namespace proyecto_final_iujo
         EN = 1
     }
 
-    /// <summary>
-    /// Gestor GLOBAL de idioma. La variable estática <see cref="Actual"/> se comparte entre todas las pantallas:
-    /// al cambiarla (botón ES / EN de la pantalla de inicio) se dispara el evento <see cref="Cambiado"/>
-    /// y cada formulario abierto vuelve a pintar sus textos; los que se abran después ya nacen en el idioma elegido.
-    /// </summary>
     public static partial class Idioma
     {
         static Lenguaje actual = Lenguaje.ES;
 
-        /// <summary>Se dispara cada vez que el usuario alterna entre Español e Inglés.</summary>
         public static event EventHandler Cambiado;
 
         public static Lenguaje Actual
@@ -40,7 +34,6 @@ namespace proyecto_final_iujo
             Actual = (actual == Lenguaje.ES) ? Lenguaje.EN : Lenguaje.ES;
         }
 
-        /// <summary>Devuelve el texto de la clave en el idioma activo.</summary>
         public static string T(string clave)
         {
             string[] v;
@@ -48,7 +41,6 @@ namespace proyecto_final_iujo
             return "[" + clave + "]";
         }
 
-        /// <summary>Devuelve el texto de la clave formateado con string.Format.</summary>
         public static string T(string clave, params object[] args)
         {
             string plantilla = T(clave);
@@ -56,10 +48,8 @@ namespace proyecto_final_iujo
             return string.Format(plantilla, args);
         }
 
-        // Cada entrada: { Español, English }
         static readonly Dictionary<string, string[]> textos = new Dictionary<string, string[]>
         {
-            // ---------------- General ----------------
             { "app.titulo", new[] { "Arena Elemental", "Elemental Arena" } },
             { "jugador.n", new[] { "Jugador {0}", "Player {0}" } },
             { "abr.j", new[] { "J{0}", "P{0}" } },
@@ -68,32 +58,29 @@ namespace proyecto_final_iujo
             { "abr.stats", new[] { "V{0} D{1} A{2} E{3}", "HP{0} D{1} A{2} E{3}" } },
             { "abr.escenario", new[] { "+{0} ATQ · +{1} DEF", "+{0} ATK · +{1} DEF" } },
 
-            // ---------------- 1. Inicio ----------------
             { "inicio.titulo", new[] { "ARENA ELEMENTAL", "ELEMENTAL ARENA" } },
             { "inicio.subtitulo", new[] { "Fuego · Agua · Tierra · Aire  —  el pacto de la Aldea se ha roto",
                                           "Fire · Water · Earth · Air  —  the Village pact has been broken" } },
-            { "inicio.jugar", new[] { "▶  JUGAR", "▶  PLAY" } },
+            { "inicio.jugar", new[] { "JUGAR", "PLAY" } },
             { "inicio.salir", new[] { "Salir", "Exit" } },
             { "inicio.idioma", new[] { "Idioma: ES  |  EN", "Language: EN  |  ES" } },
             { "inicio.creditos", new[] { "Proyecto Final IUJO  ·  Combate por turnos con Colas, Cálculo y POO",
                                          "IUJO Final Project  ·  Turn-based combat with Queues, Calculus and OOP" } },
 
-            // ---------------- 2. Lore ----------------
             { "lore.titulo", new[] { "Crónicas de la Aldea", "Chronicles of the Village" } },
             { "lore.pagina", new[] { "Capítulo {0} de {1}", "Chapter {0} of {1}" } },
-            { "lore.anterior", new[] { "◀  Anterior", "◀  Previous" } },
-            { "lore.siguiente", new[] { "Siguiente  ▶", "Next  ▶" } },
-            { "lore.continuar", new[] { "Continuar a Selección  ▶", "Next: Team Selection  ▶" } },
+            { "lore.anterior", new[] { "Anterior", "Previous" } },
+            { "lore.siguiente", new[] { "Siguiente", "Next" } },
+            { "lore.continuar", new[] { "Continuar a Selección", "Next: Team Selection" } },
 
-            // ---------------- 3. Selección ----------------
             { "sel.titulo", new[] { "Preparación del Combate", "Battle Preparation" } },
             { "sel.usuario", new[] { "Usuario", "Username" } },
             { "sel.clave", new[] { "Clave", "Password" } },
             { "sel.ingresar", new[] { "Ingresar", "Log in" } },
             { "sel.registrar", new[] { "Registrar", "Sign up" } },
             { "sel.cerrarsesion", new[] { "Cerrar sesión", "Log out" } },
-            { "sel.estado.desconectado", new[] { "● Sin sesión. Ingresa o regístrate.", "● Not logged in. Log in or sign up." } },
-            { "sel.estado.conectado", new[] { "● Conectado como {0}", "● Logged in as {0}" } },
+            { "sel.estado.desconectado", new[] { "Sin sesión. Ingresa o regístrate.", "Not logged in. Log in or sign up." } },
+            { "sel.estado.conectado", new[] { "Conectado como {0}", "Logged in as {0}" } },
             { "sel.err.formato", new[] { "Usuario de 3-16 letras/números y clave de mínimo 3 caracteres.",
                                          "Username: 3-16 letters/digits; password: at least 3 characters." } },
             { "sel.err.mismo", new[] { "Ese usuario ya está conectado como el otro jugador.", "That user is already logged in as the other player." } },
@@ -138,7 +125,6 @@ namespace proyecto_final_iujo
                 "Bono de ataque: +{0}\nBono de defensa: +{1}\nPotencia a los personajes de {2}.\n\n{3}",
                 "Attack bonus: +{0}\nDefense bonus: +{1}\nEmpowers {2} characters.\n\n{3}" } },
 
-            // ---------------- 4. Batalla ----------------
             { "bat.titulo", new[] { "Tablero de Batalla", "Battle Board" } },
             { "bat.turno", new[] { "Turno {0}  ·  Juega: {1}", "Turn {0}  ·  Playing: {1}" } },
             { "bat.info", new[] { "Modo: {0}   ·   Santuarios: {1} vs {2}", "Mode: {0}   ·   Sanctuaries: {1} vs {2}" } },
@@ -154,18 +140,17 @@ namespace proyecto_final_iujo
             { "bat.escudo", new[] { "Escudo", "Shield" } },
             { "bat.energia", new[] { "Energía", "Energy" } },
             { "bat.carga", new[] { "Carga especial", "Special charge" } },
-            { "bat.lista", new[] { "¡LISTA!", "READY!" } },
+            { "bat.lista", new[] { "LISTA", "READY" } },
             { "bat.banca", new[] { "Banca de relevos · Queue<Personaje>", "Relief bench · Queue<Personaje>" } },
             { "bat.bancavacia", new[] { "(sin relevos disponibles)", "(no substitutes left)" } },
             { "bat.consola", new[] { "Consola de Operaciones · Bitácora logarítmica", "Operations Console · Logarithmic log" } },
-            { "bat.enturno", new[] { "◆ EN TURNO", "◆ ON TURN" } },
+            { "bat.enturno", new[] { "EN TURNO", "ON TURN" } },
             { "bat.arena.info", new[] { "d = {0:0.00} u   ·   ƒ({1}) = 1 + 0.15·ln({1}) = {2:0.000}",
                                         "d = {0:0.00} u   ·   ƒ({1}) = 1 + 0.15·ln({1}) = {2:0.000}" } },
             { "bat.confirmar.rendirse", new[] { "¿{0} desea rendirse?", "Does {0} want to surrender?" } },
             { "bat.confirmar.salir", new[] { "La batalla está en curso. ¿Abandonar y cerrar el juego?", "The battle is in progress. Quit and close the game?" } },
 
-            // ---------------- Bitácora del motor ----------------
-            { "log.inicio", new[] { "═══ Comienza la batalla en la Arena Elemental ═══", "═══ The battle in the Elemental Arena begins ═══" } },
+            { "log.inicio", new[] { "=== Comienza la batalla en la Arena Elemental ===", "=== The battle in the Elemental Arena begins ===" } },
             { "log.santuario", new[] { "{0} consagra el santuario {1} ({2}): +{3} ATQ a sus aliados de ese elemento, +{4} DEF al entrar.",
                                        "{0} consecrates the {1} sanctuary ({2}): +{3} ATK for allies of that element, +{4} DEF on entry." } },
             { "log.sorteo", new[] { "Sorteo de los Ancianos: comienza {0}.", "Elders' draw: {0} goes first." } },
@@ -179,7 +164,7 @@ namespace proyecto_final_iujo
                                      "   ƒ(t) = 1 + 0.15·ln(t) → ƒ({0}) = {1:0.000} | ƒ'(t) = 0.15/t = {2:0.000} | damage = round(base·ƒ) = {3}" } },
             { "log.impacto", new[] { "   {0} pierde {1} HP; su escudo absorbe {2}.", "   {0} loses {1} HP; shield absorbs {2}." } },
             { "log.defensa", new[] { "{0} adopta postura defensiva: +{1} DEF, +1 energía.", "{0} takes a defensive stance: +{1} DEF, +1 energy." } },
-            { "log.especial", new[] { "★ ¡{0} desata [{1}]!", "★ {0} unleashes [{1}]!" } },
+            { "log.especial", new[] { "¡{0} desata [{1}]!", "{0} unleashes [{1}]!" } },
             { "log.especial.efecto", new[] { "   Efecto → {0}: {1:+0;-0;0} HP, {2:+0;-0;0} DEF | {3}: {4:+0;-0;0} HP, {5:+0;-0;0} DEF",
                                              "   Effect → {0}: {1:+0;-0;0} HP, {2:+0;-0;0} DEF | {3}: {4:+0;-0;0} HP, {5:+0;-0;0} DEF" } },
             { "log.especial.no", new[] { "{0} no puede usar su habilidad (carga {1}/100, energía {2}/2).", "{0} cannot use the ability (charge {1}/100, energy {2}/2)." } },
@@ -194,9 +179,8 @@ namespace proyecto_final_iujo
             { "log.cambio", new[] { "   {0} (EMP {1}): {2:+0;-0;0} HP, {3:+0;-0;0} DEF", "   {0} (EMP {1}): {2:+0;-0;0} HP, {3:+0;-0;0} DEF" } },
             { "log.campana", new[] { "La campana de los Ancianos resuena: ambos campeones ganan +1 energía y +15 carga.",
                                      "The Elders' bell rings: both champions gain +1 energy and +15 charge." } },
-            { "log.victoria", new[] { "★★★ {0} conquista la Arena Elemental ★★★", "★★★ {0} conquers the Elemental Arena ★★★" } },
+            { "log.victoria", new[] { "*** {0} conquista la Arena Elemental ***", "*** {0} conquers the Elemental Arena ***" } },
 
-            // ---------------- 5. Victoria ----------------
             { "vic.titulo", new[] { "¡VICTORIA!", "VICTORY!" } },
             { "vic.ganador", new[] { "{0} conquista la Arena Elemental", "{0} conquers the Elemental Arena" } },
             { "vic.rendicion", new[] { "(su rival se rindió)", "(the rival surrendered)" } },
@@ -211,15 +195,14 @@ namespace proyecto_final_iujo
             { "vic.fila.especiales", new[] { "Habilidades especiales", "Special abilities" } },
             { "vic.fila.caidos", new[] { "Personajes caídos", "Fallen characters" } },
             { "vic.fila.santuario", new[] { "Santuario (escenario)", "Sanctuary (scenario)" } },
-            { "vic.guardado.ok", new[] { "✔ Estadísticas guardadas en BD y Log .txt exportado", "✔ Stats saved to DB and .txt log exported" } },
-            { "vic.guardado.error", new[] { "✖ No se pudo guardar: {0}", "✖ Could not save: {0}" } },
+            { "vic.guardado.ok", new[] { "Estadísticas guardadas en BD y Log .txt exportado", "Stats saved to DB and .txt log exported" } },
+            { "vic.guardado.error", new[] { "No se pudo guardar: {0}", "Could not save: {0}" } },
             { "vic.sindatos", new[] { "No hay resultados de partida.", "No match results." } },
             { "vic.ruta", new[] { "Log: {0}", "Log: {0}" } },
             { "vic.mvp", new[] { "Último en pie:\n{0}", "Last one standing:\n{0}" } },
             { "vic.menu", new[] { "Volver al Menú Principal", "Back to Main Menu" } },
             { "vic.salir", new[] { "Salir", "Exit" } },
 
-            // ---------------- Log .txt exportado ----------------
             { "txt.titulo", new[] { "ARENA ELEMENTAL — BITÁCORA DE PARTIDA", "ELEMENTAL ARENA — MATCH LOG" } },
             { "txt.fecha", new[] { "Fecha: {0}", "Date: {0}" } },
             { "txt.jugadores", new[] { "Jugadores: {0} vs {1}   (modo {2})", "Players: {0} vs {1}   (mode {2})" } },
@@ -227,6 +210,35 @@ namespace proyecto_final_iujo
             { "txt.turnos", new[] { "Turnos jugados: {0}   Duración: {1}", "Turns played: {0}   Duration: {1}" } },
             { "txt.stats", new[] { "{0}: daño {1}, relevos {2}, especiales {3}, caídos {4}", "{0}: damage {1}, swaps {2}, specials {3}, fallen {4}" } },
             { "txt.bitacora", new[] { "---- Bitácora de operaciones ----", "---- Operations log ----" } },
+
+            { "partida.inicio", new[] { "¡COMIENZA EL COMBATE POR EL DESTINO DE LA ALDEA!", "THE BATTLE FOR THE DESTINY OF THE VILLAGE BEGINS!" } },
+            { "partida.vic.total", new[] { "¡VICTORIA TOTAL! Has derrotado a los 5 personajes del rival. La frontera de La Aldea está a salvo.", "TOTAL VICTORY! You have defeated all 5 rival characters. The Village border is safe." } },
+            { "partida.vic.magna", new[] { "Victoria Magna", "Magna Victory" } },
+            { "partida.ko.rival", new[] { "¡K.O.! El rival {0} ha caído. El rival debe enviar a su siguiente combatiente.", "K.O.! Rival {0} has fallen. The rival must send their next combatant." } },
+            { "partida.baja.enemiga", new[] { "Baja Enemiga", "Enemy Casualty" } },
+            { "partida.atk.fuego", new[] { "Golpe Ígneo", "Igneous Strike" } },
+            { "partida.def.tierra", new[] { "Escudo Rocoso", "Rocky Shield" } },
+            { "partida.esp.agua", new[] { "Marea (+{0} HP)", "Tide (+{0} HP)" } },
+            { "partida.rel.aire", new[] { "Ráfaga de Relevo", "Relay Gust" } },
+            { "partida.sismo", new[] { "¡SISMO EN LA ALDEA! {0} causó {1}. Recibes {2} daño sísmico.", "EARTHQUAKE IN THE VILLAGE! {0} dealt {1}. You take {2} seismic damage." } },
+            { "partida.log.turno", new[] { "[T{0}] {1} ({2} daño | mult x{3:0.0}). Recibes {4} de daño (Fatiga x{5:0.0}).", "[T{0}] {1} ({2} damage | mult x{3:0.0}). You take {4} damage (Fatigue x{5:0.0})." } },
+            { "partida.ko.heroe", new[] { "¡TU HÉROE HA CAÍDO! {0} ya no puede combatir. Relevo forzado automático.", "YOUR HERO HAS FALLEN! {0} can no longer fight. Automatic forced relay." } },
+            { "partida.caido.combate", new[] { "Caído en Combate", "Fallen in Combat" } },
+            { "partida.relevo.tactico", new[] { "¡RELEVO TÁCTICO! Entra {0} ({1}). Descansas y disipas fatiga.", "TACTICAL RELAY! {0} ({1}) enters. You rest and dissipate fatigue." } },
+            { "partida.nom.jugador", new[] { "{0} [{1}/5]", "{0} [{1}/5]" } },
+            { "partida.nom.rival", new[] { "RIVAL: {0} [{1}/5]", "RIVAL: {0} [{1}/5]" } },
+            { "partida.nom.jugador.hp", new[] { "{0} ({1} HP) [{2} en banca]", "{0} ({1} HP) [{2} on bench]" } },
+            { "partida.nom.rival.hp", new[] { "RIVAL: {0} ({1} HP) [{2} en banca]", "RIVAL: {0} ({1} HP) [{2} on bench]" } },
+            { "partida.energia", new[] { "ENERGÍA: 5\nTURNO {0}", "ENERGY: 5\nTURN {0}" } },
+            { "fin.derrota", new[] { "DERROTA", "DEFEAT" } },
+            { "fin.sub.victoria", new[] { "EL PACTO DE LA ALDEA HA SIDO PRESERVADO POR {0} (TURNO {1})", "THE VILLAGE PACT HAS BEEN PRESERVED BY {0} (TURN {1})" } },
+            { "fin.sub.derrota", new[] { "TU ESCUADRÓN HA CAÍDO ANTE LA ESPESURA DEL BOSQUE (TURNO {0})", "YOUR SQUAD HAS FALLEN TO THE THICKET OF THE FOREST (TURN {0})" } },
+
+            // Botones de acción traducibles en FormPartida
+            { "btn.atacar", new[] { "ATACAR (2 ENER)", "ATTACK (2 ENER)" } },
+            { "btn.defender", new[] { "DEFENDER (1 ENER)", "DEFEND (1 ENER)" } },
+            { "btn.especial", new[] { "ESPECIAL (2 ENER)", "SPECIAL (2 ENER)" } },
+            { "btn.relevo", new[] { "RELEVO / PASAR", "SWAP / PASS" } }
         };
     }
 }

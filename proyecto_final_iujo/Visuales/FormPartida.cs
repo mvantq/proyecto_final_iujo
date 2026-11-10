@@ -11,7 +11,6 @@ namespace proyecto_final_iujo.Visuales
 {
 	public partial class FormPartida : Form
 	{
-		// Estructura interna para gestionar cada héroe en la cola con sus propios stats
 		private class Luchador
 		{
 			public string Nombre { get; set; }
@@ -61,8 +60,24 @@ namespace proyecto_final_iujo.Visuales
 
 			picEscenario.Paint += DibujarPersonajesEnArena;
 
-			lblLogTurno.Text = "¡COMIENZA EL COMBATE POR EL DESTINO DE LA ALDEA!";
+			Idioma.Cambiado += OnIdiomaCambiado;
+			ActualizarTextosIdioma();
+
+			lblLogTurno.Text = Idioma.T("partida.inicio");
 			ActualizarInterfaz();
+		}
+
+		private void OnIdiomaCambiado(object sender, EventArgs e)
+		{
+			ActualizarTextosIdioma();
+		}
+
+		private void ActualizarTextosIdioma()
+		{
+			btnAtacar.Text = Idioma.T("btn.atacar");
+			btnDefender.Text = Idioma.T("btn.defender");
+			btnEspecial.Text = Idioma.T("btn.especial");
+			btnRelevo.Text = Idioma.T("btn.relevo");
 		}
 
 		private void InicializarEquipos(List<string> seleccionados)
@@ -115,18 +130,17 @@ namespace proyecto_final_iujo.Visuales
 			CargarImagenesCombatientes();
 
 			if (heroeJugadorActual != null)
-				lblNombreJugador.Text = string.Format("{0} [{1}/5]", heroeJugadorActual.Nombre.ToUpper(), colaJugador.Count);
+				lblNombreJugador.Text = Idioma.T("partida.nom.jugador", heroeJugadorActual.Nombre.ToUpper(), colaJugador.Count);
 
 			if (heroeRivalActual != null)
-				lblNombreRival.Text = string.Format("RIVAL: {0} [{1}/5]", heroeRivalActual.Nombre.ToUpper(), colaRival.Count);
+				lblNombreRival.Text = Idioma.T("partida.nom.rival", heroeRivalActual.Nombre.ToUpper(), colaRival.Count);
 		}
 
-		// Multiplicador de debilidad y resistencia elemental
 		private double ObtenerMultiplicadorElemental(string elemAtacante, string elemDefensor)
 		{
 			if (elemAtacante == "Fuego" && elemDefensor == "Viento") return 1.45;
 			if (elemAtacante == "Viento" && elemDefensor == "Tierra") return 1.45;
-			if (elemAtacante == "Tierra" && elemDefensor == "Agua") return 1.45;
+			if (elemDefensor == "Tierra" && elemDefensor == "Agua") return 1.45;
 			if (elemAtacante == "Agua" && elemDefensor == "Fuego") return 1.45;
 
 			if (elemAtacante == "Viento" && elemDefensor == "Fuego") return 0.70;
@@ -157,7 +171,6 @@ namespace proyecto_final_iujo.Visuales
 
 			if (esTurnoTerremoto) terremotoOcurrido = true;
 
-			// 1. ATAQUE DEL JUGADOR
 			int danoBaseJugador = 0;
 			int curacion = 0;
 			string descripcionAccion = "";
@@ -167,13 +180,13 @@ namespace proyecto_final_iujo.Visuales
 			{
 				elemAccion = "Fuego";
 				danoBaseJugador = random.Next(18, 26);
-				descripcionAccion = "🔥 Golpe Ígneo";
+				descripcionAccion = Idioma.T("partida.atk.fuego");
 			}
 			else if (tipoAccion == "Defensa de Tierra")
 			{
 				elemAccion = "Tierra";
 				danoBaseJugador = random.Next(6, 12);
-				descripcionAccion = "🛡️ Escudo Rocoso";
+				descripcionAccion = Idioma.T("partida.def.tierra");
 			}
 			else if (tipoAccion == "Especial de Agua")
 			{
@@ -181,40 +194,36 @@ namespace proyecto_final_iujo.Visuales
 				danoBaseJugador = random.Next(10, 16);
 				curacion = random.Next(14, 22);
 				heroeJugadorActual.VidaActual = Math.Min(heroeJugadorActual.VidaMaxima, heroeJugadorActual.VidaActual + curacion);
-				descripcionAccion = string.Format("🌊 Marea (+{0} HP)", curacion);
+				descripcionAccion = Idioma.T("partida.esp.agua", curacion);
 			}
 			else if (tipoAccion == "Relevo de Aire")
 			{
 				elemAccion = "Viento";
 				danoBaseJugador = random.Next(8, 14);
-				descripcionAccion = "💨 Ráfaga de Relevo";
+				descripcionAccion = Idioma.T("partida.rel.aire");
 			}
 
-			// Aplicar bonificador de afinidad elemental
 			double multJugador = ObtenerMultiplicadorElemental(elemAccion, heroeRivalActual.Elemento);
 			int danoInfligidoFinal = (int)(danoBaseJugador * multJugador);
 			heroeRivalActual.VidaActual = Math.Max(0, heroeRivalActual.VidaActual - danoInfligidoFinal);
 
-			// 2. COMPROBAR SI CAE EL RIVAL
 			if (heroeRivalActual.VidaActual <= 0)
 			{
 				colaRival.Dequeue();
 				if (colaRival.Count == 0)
 				{
 					ActualizarInterfaz();
-					MessageBox.Show("¡VICTORIA TOTAL! Has derrotado a los 5 personajes del rival. La frontera de La Aldea está a salvo.", "Victoria Magna", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show(Idioma.T("partida.vic.total"), Idioma.T("partida.vic.magna"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 					VolverAlMenu();
 					return;
 				}
 
-				MessageBox.Show(string.Format("¡K.O.! El rival {0} ha caído. El rival debe enviar a su siguiente combatiente.", heroeRivalActual.Nombre), "Baja Enemiga", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show(Idioma.T("partida.ko.rival", heroeRivalActual.Nombre), Idioma.T("partida.baja.enemiga"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				PrepararHeroesActivos();
 				ActualizarInterfaz();
 				return;
 			}
 
-			// 3. CONTRAATAQUE DEL RIVAL (Con cálculo de Fatiga del Jugador)
-			// Cuantos más turnos lleve el jugador sin relevar, más daño recibe (+10% acumulativo)
 			double factorFatiga = 1.0 + (heroeJugadorActual.TurnosEnArena * 0.10);
 			double multRival = ObtenerMultiplicadorElemental(heroeRivalActual.Elemento, heroeJugadorActual.Elemento);
 
@@ -223,44 +232,46 @@ namespace proyecto_final_iujo.Visuales
 
 			if (tipoAccion == "Defensa de Tierra")
 			{
-				danoTotalRival = (int)(danoTotalRival * 0.25); // Mitiga 75%
+				danoTotalRival = (int)(danoTotalRival * 0.25);
 			}
 			else if (tipoAccion == "Relevo de Aire")
 			{
-				danoTotalRival = (int)(danoTotalRival * 0.15); // Esquiva casi todo
+				danoTotalRival = (int)(danoTotalRival * 0.15);
 			}
 
 			heroeJugadorActual.VidaActual = Math.Max(0, heroeJugadorActual.VidaActual - danoTotalRival);
 			turno++;
 			ActualizarInterfaz();
 
-			// 4. LOGS Y TERREMOTO
 			if (esTurnoTerremoto)
 			{
 				lblLogTurno.ForeColor = Color.OrangeRed;
-				lblLogTurno.Text = string.Format("⚠️ ¡SISMO EN LA ALDEA! {0} causó {1}. Recibes {2} daño sísmico.", descripcionAccion, danoInfligidoFinal, danoTotalRival);
+				lblLogTurno.Text = Idioma.T("partida.sismo", descripcionAccion, danoInfligidoFinal, danoTotalRival);
 				FormGraficaTerremoto grafica = new FormGraficaTerremoto();
 				grafica.ShowDialog();
 			}
 			else
 			{
 				lblLogTurno.ForeColor = Color.FromArgb(255, 220, 90);
-				lblLogTurno.Text = string.Format("[T{0}] {1} ({2} daño | mult x{3:0.0}). Recibes {4} de daño (Fatiga x{5:0.0}).",
-					turno - 1, descripcionAccion, danoInfligidoFinal, multJugador, danoTotalRival, factorFatiga);
+				lblLogTurno.Text = Idioma.T("partida.log.turno", turno - 1, descripcionAccion, danoInfligidoFinal, multJugador, danoTotalRival, factorFatiga);
 			}
 
-			// 5. COMPROBAR SI CAE EL JUGADOR (Relevo forzado o Derrota)
 			if (heroeJugadorActual.VidaActual <= 0)
 			{
 				colaJugador.Dequeue();
 				if (colaJugador.Count == 0)
 				{
-					MessageBox.Show("DERROTA TOTAL: Todos tus 5 campeones han caído. La espesura del bosque ha reclamado a tu escuadrón.", "Derrota Definitiva", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+					emergentBox(
+						"DERROTA TOTAL: Todos tus 5 campeones han caído. La espesura del bosque ha reclamado a tu escuadrón.",
+						"DEFEATED: The thicket of the forest has claimed your squad.",
+						"Derrota",
+						"Defeated"
+					);
 					VolverAlMenu();
 					return;
 				}
 
-				MessageBox.Show(string.Format("¡TU HÉROE HA CAÍDO! {0} ya no puede combatir. Relevo forzado automático.", heroeJugadorActual.Nombre), "Caído en Combate", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show(Idioma.T("partida.ko.heroe", heroeJugadorActual.Nombre), Idioma.T("partida.caido.combate"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				PrepararHeroesActivos();
 				ActualizarInterfaz();
 			}
@@ -270,19 +281,21 @@ namespace proyecto_final_iujo.Visuales
 
 		private void EjecutarRelevoEstrategico()
 		{
-			if (colaJugador.Count <= 1)
-			{
-				MessageBox.Show("No te quedan personajes en la banca para relevar.", "Sin Relevos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			if (colaJugador.Count <= 1) {
+				emergentBox(
+					"No te quedan personajes en la banca para relevar.",
+					"No more characters on the bench.",
+					"No Relays",
+					"Sin Relevos"
+				);	
 				return;
 			}
 
-			// El héroe que va a descansar se cura 15 HP en la banca y disipa su fatiga
 			Luchador relevado = colaJugador.Dequeue();
 			relevado.TurnosEnArena = 0;
 			relevado.VidaActual = Math.Min(relevado.VidaMaxima, relevado.VidaActual + 15);
 			colaJugador.Enqueue(relevado);
 
-			// IA del rival: releva si su vida es baja (menor a 35) o tras varios turnos
 			if (colaRival.Count > 1 && (heroeRivalActual.VidaActual < 35 || heroeRivalActual.TurnosEnArena >= 3))
 			{
 				Luchador relevadoRival = colaRival.Dequeue();
@@ -292,7 +305,7 @@ namespace proyecto_final_iujo.Visuales
 			}
 
 			PrepararHeroesActivos();
-			lblLogTurno.Text = string.Format("¡RELEVO TÁCTICO! Entra {0} ({1}). Descansas y disipas fatiga.", heroeJugadorActual.Nombre, heroeJugadorActual.Elemento);
+			lblLogTurno.Text = Idioma.T("partida.relevo.tactico", heroeJugadorActual.Nombre, heroeJugadorActual.Elemento);
 			picEscenario.Invalidate();
 		}
 
@@ -301,20 +314,19 @@ namespace proyecto_final_iujo.Visuales
 			if (heroeJugadorActual != null)
 			{
 				pbHpJugador.Value = Math.Max(0, Math.Min(100, heroeJugadorActual.VidaActual));
-				lblNombreJugador.Text = string.Format("{0} ({1} HP) [{2} en banca]", heroeJugadorActual.Nombre.ToUpper(), heroeJugadorActual.VidaActual, colaJugador.Count - 1);
+				lblNombreJugador.Text = Idioma.T("partida.nom.jugador.hp", heroeJugadorActual.Nombre.ToUpper(), heroeJugadorActual.VidaActual, colaJugador.Count - 1);
 			}
 
 			if (heroeRivalActual != null)
 			{
 				pbHpRival.Value = Math.Max(0, Math.Min(100, heroeRivalActual.VidaActual));
-				lblNombreRival.Text = string.Format("RIVAL: {0} ({1} HP) [{2} en banca]", heroeRivalActual.Nombre.ToUpper(), heroeRivalActual.VidaActual, colaRival.Count - 1);
+				lblNombreRival.Text = Idioma.T("partida.nom.rival.hp", heroeRivalActual.Nombre.ToUpper(), heroeRivalActual.VidaActual, colaRival.Count - 1);
 			}
 
-			lblEnergiaJugador.Text = string.Format("ENERGÍA: 5\nTURNO {0}", turno);
+			lblEnergiaJugador.Text = Idioma.T("partida.energia", turno);
 			picEscenario.Invalidate();
 		}
 
-		// --- MÉTODOS VISUALES ORIGINALES (DIFUMINADO, AURAS, SOMBRAS Y FONDO) ---
 		private void CargarFondoEscenarioDifuminado()
 		{
 			string[] posiblesRutas = new string[] {
@@ -477,7 +489,6 @@ namespace proyecto_final_iujo.Visuales
 			int altoHeroe = 310;
 			int yPiso = pnlAcciones.Top - altoHeroe + 20;
 
-			// 1. Jugador (Izquierda)
 			int xJugador = 70;
 			if (imgJugador != null)
 			{
@@ -486,7 +497,6 @@ namespace proyecto_final_iujo.Visuales
 				g.DrawImage(imgJugador, new Rectangle(xJugador, yPiso, anchoHeroe, altoHeroe));
 			}
 
-			// 2. Rival (Derecha volteado)
 			int xRival = this.ClientSize.Width - anchoHeroe - 70;
 			if (imgRival != null)
 			{
@@ -524,6 +534,7 @@ namespace proyecto_final_iujo.Visuales
 
 		private void VolverAlMenu()
 		{
+			Idioma.Cambiado -= OnIdiomaCambiado;
 			MainForm inicio = new MainForm();
 			inicio.Show();
 			this.Close();
@@ -556,10 +567,22 @@ namespace proyecto_final_iujo.Visuales
 
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
+			Idioma.Cambiado -= OnIdiomaCambiado;
 			if (imgJugador != null) imgJugador.Dispose();
 			if (imgRival != null) imgRival.Dispose();
 			if (picEscenario != null && picEscenario.Image != null) picEscenario.Image.Dispose();
 			base.OnFormClosing(e);
+		}
+		
+		private void emergentBox(string ES, string EN, string NOMBRE, string NAME) {
+			switch (Idioma.Actual) {
+				case Lenguaje.ES: 
+					MessageBox.Show(ES, NOMBRE, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					break;
+				case Lenguaje.EN: 
+					MessageBox.Show(EN, NAME, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					break;
+			}
 		}
 	}
 }
