@@ -74,6 +74,10 @@
     <Compile Include="Visuales\FormCargarEquipo.Designer.cs">
       <DependentUpon>FormCargarEquipo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Visuales\FormFinCombate.cs" />
+    <Compile Include="Visuales\FormFinCombate.Designer.cs">
+      <DependentUpon>FormFinCombate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Visuales\FormGraficaTerremoto.cs" />
     <Compile Include="Visuales\FormLoreDinamico.cs" />
     <Compile Include="Visuales\FormLoreDinamico.Designer.cs">
@@ -82,10 +86,6 @@
     <Compile Include="Visuales\FormPartida.cs" />
     <Compile Include="Visuales\FormPartida.Designer.cs">
       <DependentUpon>FormPartida.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Visuales\FormFinCombate.cs" />
-    <Compile Include="Visuales\FormFinCombate.Designer.cs">
-      <DependentUpon>FormFinCombate.cs</DependentUpon>
     </Compile>
     <Compile Include="Visuales\Idiomaa.cs" />
     <Compile Include="Visuales\MainForm.cs" />

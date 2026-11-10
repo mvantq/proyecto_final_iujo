@@ -2,11 +2,8 @@
 
 namespace proyecto_final_iujo
 {
-    /* CLASE: Catalalogo.
- 	Actua como el repositorio estatico central que provee las 12 cartas de personajes
-	y los 4 escenarios elementales requeridos por las especificaciones del proyecto */
     
-    public static class CatalogoCartas
+	public static class CatalogoCartas
     {
 
         public static List<Personaje> ObtenerPersonajes()

@@ -1,18 +1,10 @@
-﻿
-using System;
+﻿using System;
 using System.Windows.Forms;
-using proyecto_final_iujo.Visuales;
 
-namespace proyecto_final_iujo
+namespace proyecto_final_iujo.Visuales
 {
-	/// <summary>
-	/// Class with program entry point.
-	/// </summary>
 	internal sealed class Program
 	{
-		/// <summary>
-		/// Program entry point.
-		/// </summary>
 		[STAThread]
 		private static void Main(string[] args)
 		{
@@ -20,6 +12,5 @@ namespace proyecto_final_iujo
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new MainForm());
 		}
-		
 	}
 }
